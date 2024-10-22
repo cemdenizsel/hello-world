@@ -184,7 +184,7 @@ class PrintMessageBehaviour(HelloWorldABCIBaseBehaviour, ABC):
         - Wait until ABCI application transitions to the next round.
         - Go to the next behaviour (set done event).
         """
-
+        owner_address_message = self.params.owner_address
         if (
             self.context.agent_address
             == self.synchronized_data.most_voted_keeper_address
@@ -193,7 +193,7 @@ class PrintMessageBehaviour(HelloWorldABCIBaseBehaviour, ABC):
         else:
             message = ":|"
 
-        printed_message = f"Agent {self.context.agent_name} (address {self.context.agent_address}) in period {self.synchronized_data.period_count} says: {message}"
+        printed_message = f"Agent {self.context.agent_name} (address {self.context.agent_address}) in period {self.synchronized_data.period_count} says: {message}, also agent draws attention to {owner_address_message} "
 
         print(printed_message)
         self.context.logger.info(f"printed_message={printed_message}")
