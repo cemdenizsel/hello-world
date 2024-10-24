@@ -20,6 +20,7 @@
 
 from abc import ABC
 from enum import Enum
+import json
 from typing import Dict, FrozenSet, List, Optional, Tuple, Type, cast
 
 from packages.valory.skills.abstract_round_abci.base import (
@@ -159,15 +160,17 @@ class PrintCountRound(CollectSameUntilThresholdRound, HelloWorldABCIAbstractRoun
     """A round in which the keeper prints the message"""
 
     payload_class = PrintCountPayload
+    synchronized_data_class = SynchronizedData
 
     def end_block(self) -> Optional[Tuple[BaseSynchronizedData, Event]]:
         """Process the end of the block."""
-        if self.threshold_reached:
-            current_count = self.synchronized_data.print_count
 
-            print("Here inside print count round!!!!: ", current_count)
+        if self.threshold_reached:
+            payload = json.loads(str(self.most_voted_payload))
+            print("INSIDE PRINTCOUNTROUND PAYLOAD VALUE IS :",  payload)
+            synchronized_data = cast(SynchronizedData, self.synchronized_data)
             synchronized_data = self.synchronized_data.update(
-                print_count = current_count,
+                print_count = payload,
                 synchronized_data_class=SynchronizedData,
             )
             return synchronized_data, Event.DONE
