@@ -20,7 +20,7 @@
 
 from abc import ABC
 from enum import Enum
-from typing import Dict, List, Optional, Tuple, Type, cast
+from typing import Dict, FrozenSet, List, Optional, Tuple, Type, cast
 
 from packages.valory.skills.abstract_round_abci.base import (
     AbciApp,
@@ -165,6 +165,7 @@ class PrintCountRound(CollectSameUntilThresholdRound, HelloWorldABCIAbstractRoun
         if self.threshold_reached:
             current_count = self.synchronized_data.print_count
 
+            print("Here inside print count round!!!!: ", current_count)
             synchronized_data = self.synchronized_data.update(
                 print_count = current_count,
                 synchronized_data_class=SynchronizedData,
@@ -261,3 +262,4 @@ class HelloWorldAbciApp(AbciApp[Event]):
         Event.ROUND_TIMEOUT: 30.0,
         Event.RESET_TIMEOUT: 30.0,
     }
+    cross_period_persisted_keys: FrozenSet[str] = frozenset(["print_count"])

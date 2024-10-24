@@ -226,12 +226,12 @@ class PrintCountBehaviour(HelloWorldABCIBaseBehaviour, ABC):
         
         current_print_count = self.synchronized_data.print_count
 
-        printed_message = f"PrintMessageBehaviour is called {current_print_count} times."
+        printed_message = f"PrintMessageBehaviour is called {current_print_count} times. Keep an eye on it :)"
 
         print(printed_message)
         self.context.logger.info(f"printed_message={printed_message}")
 
-        payload = PrintCountPayload(self.context.agent_address, current_print_count+1)
+        payload = PrintCountPayload(self.context.agent_address, (current_print_count+1))
 
         yield from self.send_a2a_transaction(payload)
         yield from self.wait_until_round_end()
